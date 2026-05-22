@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-"use client";
-import { css } from "@emotion/react";
-import DataTable from "@/components/DataTable/DataTable";
-import Filter from "@/components/Filter/Filter";
-import PopulationChangeGraph from "@/components/Graph/PopulationChangeGraph";
-import PopulationDensityGraph from "@/components/Graph/PopulationDensityGraph";
-import PrefPopulationGraph from "@/components/Graph/PrefPopulationGraph";
-import { useFetch } from "@/hooks/useFetch";
-import { PrefPopulation } from "@/types/Response";
+'use client'
+import { css } from '@emotion/react'
+import DataTable from '@/components/DataTable/DataTable'
+import Filter from '@/components/Filter/Filter'
+import PopulationChangeGraph from '@/components/Graph/PopulationChangeGraph'
+import PopulationDensityGraph from '@/components/Graph/PopulationDensityGraph'
+import PrefPopulationGraph from '@/components/Graph/PrefPopulationGraph'
+import { useFetch } from '@/hooks/useFetch'
+import { PrefPopulation } from '@/types/Response'
 import {
   AppBar,
   Box,
@@ -16,7 +16,7 @@ import {
   Toolbar,
   Typography,
   colors,
-} from "@mui/material";
+} from '@mui/material'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,18 +29,12 @@ import {
   PointElement,
   LineController,
   UpdateMode,
-} from "chart.js";
-import {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import GraphTab from "@/components/GraphTab";
-import { TAB_NAME, TabState } from "@/types/TabState";
-import { theme } from "./theme/theme";
-import PrefPopulationIncreaseGraph from "@/components/Graph/PrefPopulationIncreaseGraph";
+} from 'chart.js'
+import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react'
+import GraphTab from '@/components/GraphTab'
+import { TAB_NAME, TabState } from '@/types/TabState'
+import { theme } from './theme/theme'
+import PrefPopulationIncreaseGraph from '@/components/Graph/PrefPopulationIncreaseGraph'
 
 ChartJS.register(
   CategoryScale,
@@ -52,23 +46,23 @@ ChartJS.register(
   LineElement,
   PointElement,
   LineController
-);
+)
 
-ChartJS.defaults.font.family = theme.typography.fontFamily;
+ChartJS.defaults.font.family = theme.typography.fontFamily
 
 const Page = () => {
-  const { prefPopulationList, changesPopulationList } = useFetch();
+  const { prefPopulationList, changesPopulationList } = useFetch()
   const [filteredPrefList, setFilteredPrefList] = useState<
     PrefPopulation[] | null
-  >(prefPopulationList);
+  >(prefPopulationList)
 
   useEffect(() => {
-    setFilteredPrefList(prefPopulationList);
-  }, [prefPopulationList]);
+    setFilteredPrefList(prefPopulationList)
+  }, [prefPopulationList])
 
-  const [tabValue, setTabValue] = useState<TabState>(TAB_NAME.Population);
+  const [tabValue, setTabValue] = useState<TabState>(TAB_NAME.Population)
 
-  const [chartUpdateMode, setChartUpdateMode] = useState<UpdateMode>("none");
+  const [chartUpdateMode, setChartUpdateMode] = useState<UpdateMode>('none')
 
   /**
    * タブの切り替え
@@ -76,24 +70,24 @@ const Page = () => {
    * @param newValue
    */
   const handleTabChange = (_: SyntheticEvent, newValue: TabState) => {
-    setTabValue(newValue);
-    setChartUpdateMode("show");
-  };
+    setTabValue(newValue)
+    setChartUpdateMode('show')
+  }
 
   // チェックボックスの状態が変更されたときに呼ばれる関数です
   const handleFilter = useCallback(
     (filteredPref: PrefPopulation[]) => {
-      setFilteredPrefList(filteredPref);
-      setChartUpdateMode("active");
+      setFilteredPrefList(filteredPref)
+      setChartUpdateMode('active')
     },
     [setFilteredPrefList]
-  );
+  )
 
-  const yearElement = useRef<HTMLElement>(null);
+  const yearElement = useRef<HTMLElement>(null)
   if (yearElement.current) {
-    const date = new Date();
-    const year = date.getFullYear();
-    yearElement.current.textContent = year;
+    const date = new Date()
+    const year = date.getFullYear()
+    yearElement.current.textContent = year.toString()
   }
 
   const layoutStyle = (tabValue: TabState) => css`
@@ -104,20 +98,20 @@ const Page = () => {
     grid-template: ${tabValue === TAB_NAME.Changes
       ? '"graph graph" auto "table table" auto / calc(100% - 464px) 424px'
       : '"graph filter" auto "table table" auto / calc(100% - 464px) 424px'};
-  `;
+  `
 
   const graphStyle = css`
     grid-area: graph;
-  `;
+  `
 
   const filterStyle = css`
     grid-area: filter;
     align-self: stretch;
-  `;
+  `
 
   const tableStyle = css`
     grid-area: table;
-  `;
+  `
 
   return (
     <ThemeProvider theme={theme}>
@@ -187,7 +181,7 @@ const Page = () => {
           </Paper>
           {tabValue !== TAB_NAME.Changes && (
             <div css={filterStyle}>
-              <Paper sx={{ height: "100%" }}>
+              <Paper sx={{ height: '100%' }}>
                 <Box sx={{ p: 2 }}>
                   {prefPopulationList && (
                     <Filter
@@ -229,7 +223,7 @@ const Page = () => {
         </Typography>
       </div>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
