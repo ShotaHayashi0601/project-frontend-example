@@ -22,8 +22,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Setting an environment variable with the value of a configuration variable
-  NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH }}
+  # GitHub Pages のプロジェクトサイトは /リポジトリ名/ で配信される
+  # vars.BASE_PATH が未設定のときはリポジトリ名を自動で使う
+  NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH != '' && vars.BASE_PATH || format('/{0}', github.event.repository.name) }}
 
 jobs:
   deploy:
